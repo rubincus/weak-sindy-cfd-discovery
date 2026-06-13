@@ -1,0 +1,44 @@
+experiment:
+  name: burgers_ood_rollout
+  output_dir: results/burgers_ood_rollout
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 777
+
+identification:
+  methods:
+    - name: strong_savgol_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.05
+      normalize_columns: true
+      max_iter: 12
+      preprocessing:
+        type: savgol
+        window_length: 9
+        polyorder: 3
+    - name: weak_stlsq
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+
+rollout:
+  enabled: true
+  T_rollout: 3.00
+  diffusion_policy: raw
+  blowup_threshold: 50.0
+

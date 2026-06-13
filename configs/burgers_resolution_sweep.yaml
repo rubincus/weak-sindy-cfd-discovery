@@ -1,0 +1,40 @@
+experiment:
+  name: burgers_resolution_sweep
+  output_dir: results/burgers_resolution_sweep
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+problem:
+  grid:
+    Nx: 64
+    Nt: 121
+    T: 1.20
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 1000
+
+identification:
+  methods:
+    - name: strong_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: weak_stlsq
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 10
+        ntc: 8
+

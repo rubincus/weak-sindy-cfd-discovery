@@ -1,0 +1,46 @@
+experiment:
+  name: burgers_cost_scaling
+  output_dir: results/burgers_cost_scaling
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.03
+      seed: 1000
+
+identification:
+  methods:
+    - name: strong_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: weak_stlsq_M_80
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 10
+        ntc: 8
+    - name: weak_stlsq_M_140
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+

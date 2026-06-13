@@ -1,0 +1,82 @@
+experiment:
+  name: burgers_hyperparameter_sweep
+  output_dir: results/burgers_hyperparameter_sweep
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 777
+
+identification:
+  methods:
+    - name: strong_stlsq_lam_0p01
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.01
+      normalize_columns: true
+      max_iter: 12
+    - name: strong_stlsq_lam_0p1
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: strong_stlsq_lam_0p4
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.4
+      normalize_columns: true
+      max_iter: 12
+    - name: weak_stlsq_lam_0p01
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.01
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_stlsq_lam_0p1
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_stlsq_ax_0p45
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.45
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_stlsq_at_0p44
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.44
+        nxc: 14
+        ntc: 10
+

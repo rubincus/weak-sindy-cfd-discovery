@@ -1,0 +1,75 @@
+experiment:
+  name: ns2d_vorticity_minimal
+  output_dir: results/ns2d_vorticity_minimal
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+problem:
+  name: ns2d_vorticity_minimal
+  equation: "omega_t = -u*omega_x - v*omega_y + nu*(omega_xx + omega_yy)"
+  nu: 0.001
+  domain:
+    Lx: 6.283185307179586
+    Ly: 6.283185307179586
+    periodic: true
+  grid:
+    Nx: 64
+    Ny: 64
+    Nt: 101
+    T: 1.00
+
+solver:
+  time_integrator: rk4
+  derivative_operator: fourier_spectral_2d
+  dealiasing: true
+
+library:
+  name: ns2d_vorticity_minimal
+  terms: ["1", "omega", "omega_x", "omega_y", "uomega_x", "vomega_y", "lap_omega", "omega2", "omegaomega_x", "omegaomega_y"]
+  true_coefficients: [0.0, 0.0, 0.0, 0.0, -1.0, -1.0, 0.001, 0.0, 0.0, 0.0]
+  true_support: [4, 5, 6]
+
+identification:
+  methods:
+    - name: strong_stlsq_ns2d
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.0005
+      normalize_columns: true
+      max_iter: 12
+    - name: weak_stlsq_ns2d
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.0005
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.95
+        ay: 0.95
+        at: 0.18
+        nxc: 8
+        nyc: 8
+        ntc: 6
+        center_policy: interior_uniform
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.0
+      seed: 2026
+    - type: gaussian_iid
+      sigma: 0.02
+      seed: 2026
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 2026
+
+rollout:
+  enabled: false
+
+metrics:
+  support_threshold_mode: absolute
+  support_threshold_absolute: 0.0008
+  support_threshold_relative: 0.0001

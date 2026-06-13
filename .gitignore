@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environments and local settings
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Generated experiment outputs
+results/*
+!results/.gitkeep
+figures/
+*.npz
+*.npy
+
+# Manuscripts, archives, and LaTeX projects should stay outside this repo
+CMES_SINDy_revision/
+CMES_TSP_submission/
+MDPI_SINDy/
+*.tex
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.pdf
+*.zip
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

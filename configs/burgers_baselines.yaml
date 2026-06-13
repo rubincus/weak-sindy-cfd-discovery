@@ -1,0 +1,117 @@
+experiment:
+  name: burgers_baselines
+  output_dir: results/burgers_baselines
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 777
+
+identification:
+  methods:
+    - name: strong_stlsq_raw
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: strong_savgol_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.05
+      normalize_columns: true
+      max_iter: 12
+      preprocessing:
+        type: savgol
+        window_length: 9
+        polyorder: 3
+    - name: strong_stlsq_spectral_filter
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.05
+      normalize_columns: true
+      max_iter: 12
+      preprocessing:
+        type: spectral_lowpass
+        keep_fraction: 0.50
+    - name: strong_ridge_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.05
+      ridge_alpha: 1.0e-6
+      normalize_columns: true
+      max_iter: 12
+    - name: strong_sr3
+      formulation: strong
+      regressor: sr3
+      lambda: 0.05
+      kappa: 1.0
+      normalize_columns: true
+      max_iter: 100
+    - name: strong_elasticnet
+      formulation: strong
+      regressor: elasticnet
+      alpha: 0.001
+      l1_ratio: 0.80
+      normalize_columns: true
+      max_iter: 5000
+    - name: weak_stlsq
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_sr3
+      formulation: weak
+      regressor: sr3
+      lambda: 0.05
+      kappa: 1.0
+      normalize_columns: true
+      max_iter: 100
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_stability
+      formulation: weak
+      regressor: stability_selection
+      lambda: 0.08
+      n_repeats: 40
+      row_fraction: 0.70
+      probability_threshold: 0.60
+      seed: 20260612
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_constrained
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      constraints:
+        positive_diffusion: true
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+

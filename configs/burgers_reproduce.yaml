@@ -1,0 +1,78 @@
+experiment:
+  name: burgers_reproduce
+  output_dir: results/burgers_reproduce
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+problem:
+  name: burgers_1d
+  equation: "u_t = -u*u_x + nu*u_xx"
+  nu: 0.075
+  domain:
+    L: 6.283185307179586
+    periodic: true
+  grid:
+    Nx: 128
+    Nt: 241
+    T: 1.20
+  initial_condition:
+    type: trigonometric_reference
+    formula: "0.90*sin(x) + 0.35*sin(2*x+0.30) - 0.18*cos(3*x-0.10)"
+
+solver:
+  time_integrator: rk4
+  derivative_operator: fourier_spectral
+  dealiasing: false
+
+library:
+  name: burgers_base
+  terms: ["1", "u", "u2", "ux", "uux", "uxx"]
+  true_coefficients: [0.0, 0.0, 0.0, 0.0, -1.0, 0.075]
+  true_support: [4, 5]
+
+identification:
+  methods:
+    - name: strong_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: weak_stlsq
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+        center_policy: interior_uniform
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.0
+      seed: 0
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 0
+
+rollout:
+  enabled: true
+  T_rollout: 1.20
+  dt: null
+  diffusion_policy: raw
+  blowup_threshold: 50.0
+
+metrics:
+  support_threshold_mode: relative
+  support_threshold_relative: 1.0e-4
+  compute_energy: true
+  compute_condition_number: true
+  compute_weak_residual: true
+

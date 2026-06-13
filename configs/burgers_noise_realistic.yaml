@@ -1,0 +1,83 @@
+experiment:
+  name: burgers_noise_realistic
+  output_dir: results/burgers_noise_realistic
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 1000
+    - type: spatial_correlated_gaussian
+      sigma: 0.05
+      ell_x: 2.0
+      seed: 1000
+    - type: temporal_correlated_gaussian
+      sigma: 0.05
+      ell_t: 2.0
+      seed: 1000
+    - type: spatiotemporal_correlated_gaussian
+      sigma: 0.05
+      ell_x: 2.0
+      ell_t: 2.0
+      seed: 1000
+    - type: heteroscedastic_gaussian
+      sigma: 0.05
+      seed: 1000
+    - type: impulsive_outliers
+      sigma: 0.03
+      outlier_probability: 0.02
+      outlier_scale: 10.0
+      seed: 1000
+    - type: missing_data
+      sigma: 0.0
+      missing_probability: 0.05
+      seed: 1000
+
+identification:
+  methods:
+    - name: strong_stlsq_raw
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: strong_savgol_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.05
+      normalize_columns: true
+      max_iter: 12
+      preprocessing:
+        type: savgol
+        window_length: 9
+        polyorder: 3
+    - name: weak_stlsq
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+    - name: weak_constrained
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      constraints:
+        positive_diffusion: true
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+

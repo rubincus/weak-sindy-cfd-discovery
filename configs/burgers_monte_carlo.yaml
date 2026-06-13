@@ -1,0 +1,39 @@
+experiment:
+  name: burgers_monte_carlo
+  output_dir: results/burgers_monte_carlo
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+monte_carlo:
+  enabled: true
+  n_repeats: 30
+  seed_start: 1000
+
+noise:
+  sweep:
+    type: gaussian_iid
+    sigmas: [0.01, 0.03, 0.05, 0.08]
+
+identification:
+  methods:
+    - name: strong_stlsq
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: weak_stlsq
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+        center_policy: interior_uniform
+

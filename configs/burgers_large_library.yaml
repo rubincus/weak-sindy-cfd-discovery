@@ -1,0 +1,83 @@
+experiment:
+  name: burgers_large_library
+  output_dir: results/burgers_large_library
+  seed_master: 20260612
+  save_arrays: true
+  save_figures: true
+
+library:
+  name: burgers_large
+  terms: ["1", "u", "u2", "u3", "ux", "uux", "u2ux", "uxx", "uuxx", "ux2", "uxxx", "uxxxx"]
+  true_coefficients: [0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.075, 0.0, 0.0, 0.0, 0.0]
+  true_support: [5, 7]
+
+noise:
+  cases:
+    - type: gaussian_iid
+      sigma: 0.05
+      seed: 777
+
+identification:
+  methods:
+    - name: strong_stlsq_large
+      formulation: strong
+      regressor: stlsq
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+    - name: strong_sr3_large
+      formulation: strong
+      regressor: sr3
+      lambda: 0.05
+      kappa: 1.0
+      normalize_columns: true
+      max_iter: 100
+    - name: weak_stlsq_large
+      formulation: weak
+      regressor: stlsq
+      lambda: 0.05
+      normalize_columns: true
+      max_iter: 12
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+        center_policy: interior_uniform
+    - name: weak_sr3_large
+      formulation: weak
+      regressor: sr3
+      lambda: 0.05
+      kappa: 1.0
+      normalize_columns: true
+      max_iter: 100
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+        center_policy: interior_uniform
+    - name: weak_stability_large
+      formulation: weak
+      regressor: stability_selection
+      lambda: 0.1
+      normalize_columns: true
+      max_iter: 12
+      n_repeats: 40
+      row_fraction: 0.70
+      probability_threshold: 0.60
+      seed: 20260612
+      test_functions:
+        family: compact_cosine
+        ax: 0.90
+        at: 0.22
+        nxc: 14
+        ntc: 10
+        center_policy: interior_uniform
+
+metrics:
+  support_threshold_mode: absolute
+  support_threshold_absolute: 0.01
+  support_threshold_relative: 0.0001
