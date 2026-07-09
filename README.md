@@ -79,6 +79,7 @@ python scripts/run_experiment.py --config configs/burgers_ood_rollout.yaml
 python scripts/run_experiment.py --config configs/burgers_large_library.yaml
 python scripts/run_experiment.py --config configs/burgers_cost_scaling.yaml
 python scripts/run_experiment.py --config configs/ns2d_vorticity_minimal.yaml
+python scripts/run_experiment.py --config configs/ns2d_vorticity_monte_carlo.yaml
 ```
 
 Outputs are written to `results/<experiment_name>/` and include resolved
@@ -98,6 +99,7 @@ available.
 | `burgers_large_library.yaml` | Test false-support attraction under an enlarged candidate library. |
 | `burgers_cost_scaling.yaml` | Measure assembly, fit, rollout, and memory cost for different weak test counts. |
 | `ns2d_vorticity_minimal.yaml` | Run the periodic 2D vorticity support-recovery stress test. |
+| `ns2d_vorticity_monte_carlo.yaml` | Run 30 repeated noisy 2D vorticity trials at `sigma=0.02` and `sigma=0.05`. |
 
 ## Main Methods
 
@@ -109,6 +111,8 @@ available.
 - Enlarged-library support tests for Burgers dynamics.
 - Periodic two-dimensional vorticity identification with strong and weak
   operators.
+- A lightweight 2D vorticity Monte Carlo configuration that stores CSV
+  diagnostics without large array outputs.
 
 ## Tests
 

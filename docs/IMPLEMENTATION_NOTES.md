@@ -64,4 +64,6 @@ La biblioteca ampliada de Burgers usa integracion por partes para evitar diferen
 La configuracion `ns2d_vorticity_minimal.yaml` tambien esta implementada. Genera una trayectoria periodica de vorticidad 2D,
 `omega_t = -u omega_x - v omega_y + nu Delta omega`, con `nu = 1e-3`, recupera la velocidad mediante Biot-Savart espectral y compara `strong_stlsq_ns2d` contra `weak_stlsq_ns2d` para `sigma in {0, 0.02, 0.05}`.
 
+La configuracion `ns2d_vorticity_monte_carlo.yaml` repite el caso 2D con 30 semillas para cada nivel de ruido (`sigma = 0.02` y `sigma = 0.05`). Para mantener el repositorio liviano, desactiva `save_arrays` y `save_figures`; las salidas principales son `metrics.csv`, `coefficients.csv`, `supports.csv`, `residuals.csv`, `runtimes.csv` y `summaries/mc_summary.csv`.
+
 El caso 2D debe interpretarse como un stress test periodico: aun no incluye paredes, terminos de borde, formulacion velocidad-presion ni espacios de prueba exactamente divergence-free.
